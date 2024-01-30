@@ -1,0 +1,221 @@
+#:kivy 2.2.0
+#:import FadeTransition kivy.uix.screenmanager.FadeTransition
+
+
+Sm:
+
+<Sm>:
+    uidInputWidget: uidInput
+    bruteUidInputWidget: bruteUidInput
+    transition: FadeTransition()
+
+
+    Screen:
+        name: 'startScreen'
+
+        BoxLayout:
+            orientation: 'vertical'
+            spacing: '20dp'
+
+            AnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'bottom'
+
+                Button:
+                    text: 'Kloonaa UID'
+                    size_hint: 0.7, 0.3
+                    on_release: root.initUidCloning()
+
+            AnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'center'
+
+                Button:
+                    text: 'Kirjoita UID'
+                    size_hint: 0.7, 0.3
+                    on_release: root.current = 'askForUidScreen'
+
+            AnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'top'
+
+                Button:
+                    text: 'Arvaa UID'
+                    size_hint: 0.7, 0.3
+                    on_release: root.initUidBrute()
+
+
+    Screen:
+        name: 'askForUidScreen'
+
+        BoxLayout:
+            orientation: 'vertical'
+            spacing: '20dp'
+
+            AnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'bottom'
+
+                Label:
+                    text: root.uidInstructionLabel
+                    text_size: (root.width - dp(30)), None
+                    size_hint: 1, None
+                    height: '40dp'
+                    pos_hint: {'center_x': 0.5, 'top': 0.1}
+                    halign: 'center'
+                    valign: 'bottom'
+
+
+            TextInput:
+                id: uidInput
+                text: ''
+                multiline: False
+                size_hint: 0.7, None
+                height: '50dp'
+                pos_hint: {'center_x': 0.5}
+            
+
+            AnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'top'
+
+                Button:
+                    id: uidInputButton
+                    text: 'Vaihda UID'
+                    size_hint: 0.7, 0.3
+                    on_release: root.changeUid()
+
+
+
+    Screen:
+        name: 'cloneTagScreen'
+
+        BoxLayout:
+            orientation: 'vertical'
+
+            Label:
+                text: ''
+                size_hint: 1, 0.6
+
+            Image:
+                source: 'images/clock.png'
+                fit_mode: 'contain'
+
+            Label:
+                text: root.cloneTagStatus
+                markup: True
+                text_size: (root.width - dp(30)), None
+                size: self.texture_size
+                halign: 'center'
+                valign: 'center'
+
+
+    Screen:
+        name: 'uidBruteScreen'
+
+        BoxLayout:
+            orientation: 'vertical'
+
+            Label:
+                text: ''
+                size_hint: 1, 0.6
+
+            Label:
+                text: root.uidBruteStatus
+                markup: True
+                text_size: (root.width - dp(30)), None
+                size: self.texture_size
+                halign: 'center'
+                valign: 'center'
+
+            TextInput:
+                id: bruteUidInput
+                text: '34914C00-34914CFF'
+                multiline: False
+                size_hint: 0.7, None
+                height: '50dp'
+                pos_hint: {'center_x': 0.5}
+
+            AnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'bottom'
+
+                Button:
+                    id: bruteUidBeginButton
+                    text: 'Aloita arvailu'
+                    disabled: False
+                    size_hint: 0.7, 0.4
+                    on_release: root.beginUidBrute()
+
+            AnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'top'
+
+                Button:
+                    id: bruteUidStopButton
+                    text: 'Lopeta arvailu'
+                    disabled: True
+                    size_hint: 0.7, 0.4
+                    on_release: root.stopUidBrute()
+
+
+    Screen:
+        name: 'errorScreen'
+
+        BoxLayout:
+            orientation: 'vertical'
+
+            Label:
+                text: ''
+                size_hint: 1, 0.6
+
+            Image:
+                source: 'images/error.png'
+                fit_mode: 'contain'
+
+            Label:
+                text: root.errorLabel
+                text_size: (root.width - dp(30)), None
+                size: self.texture_size
+                halign: 'center'
+                valign: 'center'
+
+            AnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'top'
+
+                Button:
+                    text: 'Yritä uudelleen'
+                    size_hint: 0.7, 0.4
+                    on_release: root.retry()
+
+
+    Screen:
+        name: 'cloneTagSuccessScreen'
+
+        BoxLayout:
+            orientation: 'vertical'
+
+            Label:
+                text: ''
+                size_hint: 1, 0.6
+
+            Image:
+                source: 'images/checkmark.png'
+                fit_mode: 'contain'
+
+            Label:
+                text: root.cloneTagSuccessStatus
+                text_size: (root.width - dp(30)), None
+                size: self.texture_size
+                halign: 'center'
+                valign: 'center'
+
+            AnchorLayout:
+                anchor_x: 'center'
+                anchor_y: 'top'
+
+                Button:
+                    text: 'Sulje sovellus'
+                    size_hint: 0.7, 0.4
+                    on_release: root.closeApp()
